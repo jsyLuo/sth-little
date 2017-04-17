@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        $(window).resize(function () {
+            var Browser_Flag = View_Register_Affix_Flag = 0;
+            var tempHeight, tempWidth, tempMarginTop;
+            if ($.browser.msie == true) {
+                if ($.browser.versionNumber < 10) {
+                    View_Register_Affix_Flag = 1;
+                }
+                if ($.browser.versionNumber < 9) {
+                    Browser_Flag = 1;
+                }
+            }
+            tempHeight = Browser_Flag == 0 ? window.innerHeight : $(window).height();
+            tempHeight = tempHeight > 750 ? tempHeight : 750;
+            tempWidth = $(window).width();
+            tempWidth = tempWidth > 1180 ? tempWidth : 1180;
+            $("#register_wrapper").css({ "height": tempHeight + "px", "width": tempWidth });
+            tempHeight = tempHeight - $("#register_header").outerHeight() - $("#register_footer").outerHeight() - 12;
+            $("#register_main").css({ "height": tempHeight + "px" });
+
+        });
+        $(window).resize();
+
+
+
+        //验证码
+        $("#register_form #sms").attr("disabled", "disabled").html("<span class='fillin' style='color:#1aaf5d;'>60</span> 秒后可重新发送");
+        timer_send_verification_code = window.setInterval(function () {
+            var temp = parseInt($("#register_form #sms .fillin").text());
+            temp--;
+            $("#register_form #sms .fillin").text(temp);
+            if (temp == 0) {
+                window.clearInterval(timer_send_verification_code);
+                timer_send_verification_code = function () { };
+                $("#register_form #sms").removeAttr("disabled").html("免费获取验证码");
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>
