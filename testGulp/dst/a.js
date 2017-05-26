@@ -1,1 +1,0 @@
-var aa=function(){console.log("Heoollo 1")}();
