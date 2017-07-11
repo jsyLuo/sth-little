@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script type="text/javascript">
+    function wrapperA(a) {
+      var result=[], i, n;
+      for(i=0, n=a.length; i<n; i++){
+        result[i]= function(){return a[i]};
+      }
+
+      return result;
+    }
+
+    var wrapperA= wrapperA([10,20,30,40,50]);
+    var f= wrapperA[0];
+    f(); //undefined
+  </script>
+
+  <script type="text/javascript">
+    function wrapperB(a) {
+      var result=[], i, n;
+      for(i=0, n=a.length; i<n; i++){
+        var j=i;
+        result[i]= function(){return a[j]};
+      }
+
+      return result;
+    }
+
+    var wrapperB= wrapperB([10,20,30,40,50]);
+    var ff= wrapperB[0];
+    ff(); //50
+
+  //感想： 外部函数生命周期虽然结束  
+  //但是闭包对其变量 的引用   停留在变量最后的结果不变
+  </script>
+<script type="text/javascript">
+      function wrapperC(a) {
+      var result=[], i, n;
+      for(i=0, n=a.length; i<n; i++){
+        (function(){
+            var j= i;  //局部变量每次被重置
+            result[i]= function(){return a[j]};
+        })();
+      }
+
+      return result;
+    }
+
+    var wrapperC= wrapperC([10,20,30,40,50]);
+    var fff= wrapperC[0];
+    fff(); //50
+
+</script>
+
+</body>
+</html>
