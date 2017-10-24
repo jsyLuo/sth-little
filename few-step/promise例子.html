@@ -1,0 +1,28 @@
+<!doctype html > 
+<html lang='zh-cn'>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"></script>
+
+<script>    
+
+var aaa;
+
+new Promise(function(resolve,reject){
+
+  new Fingerprint2().get(function(result, components){
+     console.log('111',components)
+     resolve(components);
+    
+  })
+
+}).then(function(data){
+  aaa = data
+  console.log('222',aaa);
+})
+
+
+console.log('000',aaa);
+
+
+</script>
+
+</html>
