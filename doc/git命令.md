@@ -42,6 +42,20 @@ git push origin
 `
 
 
-### other
-https://github.com/pangniur/sth-little.git
-https://github.com/pangniur/sth-little.git
+### 本地建好仓库后，，关联远程的
+### remote origin already exists 错误解决办法
+
+1、先删除远程 Git 仓库
+
+$ git remote rm origin
+
+2、再添加远程 Git 仓库
+
+$ git remote add origin git@github.com:FBing/java-code-generator
+
+ git remote add origin https://github.com/pangniur/test-rep.git
+
+
+ git add -A：将文件的修改，文件的删除，文件的新建，添加到暂存区。
+git commit -a
+

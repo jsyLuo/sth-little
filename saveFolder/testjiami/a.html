@@ -1,0 +1,62 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src='../../vendor/md5.js'></script>
+    <script type="text/javascript" src='../../vendor/aes.js'></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function dateFormat(fmt, val) {
+        let t = val ? new Date(val) : new Date()
+        var o = {
+          'M+': t.getMonth() + 1, // 月份
+          'd+': t.getDate(), // 日
+          'h+': t.getHours(), // 小时
+          'm+': t.getMinutes(), // 分
+          's+': t.getSeconds(), // 秒
+          'q+': Math.floor((t.getMonth() + 3) / 3), // 季度
+          'S': t.getMilliseconds() // 毫秒
+        }
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (t.getFullYear() + '').substr(4 - RegExp.$1.length))
+        for (var k in o) { if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length))) }
+        return fmt
+      }
+
+
+      const timestamp = (new Date()).toUTCString()
+      const key = hex_md5(dateFormat('yyyyddhh-MM-mm', timestamp)).toString()
+
+      let plaintText = 'admin'
+
+      var encryptedData = CryptoJS.AES.encrypt(
+        CryptoJS.enc.Utf8.parse(plaintText), 
+        CryptoJS.enc.Utf8.parse(key), 
+        {  
+        mode: CryptoJS.mode.ECB,  
+        padding: CryptoJS.pad.Pkcs7  
+      });  
+  
+    console.log(timestamp)
+    console.log("加密前："+plaintText,'key is--->'+key);  
+    console.log("加密后："+encryptedData);  
+
+    // Wed, 25 Apr 2018 06:38:28 GMT
+    // 加密前：admin key is--->860175a794e924b67bcedbeacc2d272b
+    // 加密后：uT2oeamdRVnT2BBpkxYClA==
+
+    $.ajax({
+
+    headers: {
+        Times: timestamp
+    },
+    type: "get",
+    success: function (data) {
+    }
+    });
+
+    </script>
+  </body>
+  </html>
