@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script src="v6.js"></script> -->
+</head>
+<style>
+  #green{
+    border: 1px solid green;
+    padding: 30px;
+    margin: 20px;
+  }
+  #pink{
+    border: 1px solid pink;
+    margin: 20px;
+    padding: 30px;
+  }
+</style>
+
+<body>
+  <div id="green">
+    <p>'2000:0:0:0:0:0:0:1'.split(':')</p>
+    <p>(8) ["2000", "0", "0", "0", "0", "0", "0", "1"]</p>
+    <p>'2000::1'.split(':')</p>
+    <p>(3) ["2000", "", "1"]</p>
+    <p>var a = '::2000::900::'  a.split(':')</p>
+    <p>(7) ["", "", "2000", "", "900", "", ""]</p>
+  </div>
+  <div id="pink">
+    <p><input id="input" type="text" value="" style="width: 300px;" /><button onclick="myCheck()">检查ipv6</button></p>
+    <p id="text"></p>
+  </div>
+
+  <script>
+    function isIpv6(addr) {
+      var reObj =
+        /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+      return reObj.test(addr)
+    }
+    var addr = "2031:0000:1F1F:0000:0000:0100:11A0:ADDF";
+
+    function changeIp(addr){  // '::2000:900' '2000::900'  2000:900::
+      var index = addr.indexOf('::')
+      // var attr = addr.split(':')
+      var target = ''
+      if(index>-1) {
+        if(index == 0){
+          var a = addr.replace('::','').split(':')
+          var b = new Array(8-a.length+1).join('0').split('')
+          target = b.concat(a).join(':')
+        }else if(index == addr.length-2){
+          var a = addr.replace('::','').split(':')
+          var b = new Array(8-a.length+1).join('0').split('')
+          target = a.concat(b).join(':')
+        }else{
+          var a = addr.split(':')  // '2000::900'  (3) ["2000", "", "900"]
+          var b = new Array(8-a.length+1+1).join('0:')
+          target = addr.replace('::',':'+b)
+        }
+        var newArr = []
+        var oldArr = target.split(':')
+        for(var i=0;i <oldArr.length;i++){
+          var el = oldArr[i]
+          el = el.toUpperCase()
+          if(el.length < 4 ){
+            el = new Array(4-el.length+1).join('0')  + el
+          }
+          newArr.push(el)
+        }
+        
+        console.log(addr,'\t',target,'\t',newArr.join(':'))
+      }
+    }
+    function myCheck() {
+      var textV = document.getElementById('input').value
+      document.getElementById('text').innerText = 'check 中..'
+      setTimeout(function(){
+        document.getElementById('text').innerText = isIpv6(textV)
+      },700)
+    }
+  </script>
+</body>
+
+</html>
