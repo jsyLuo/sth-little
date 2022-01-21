@@ -1,16 +1,10 @@
-/*
- * @Author: Went
- * @Date: 2021-11-22 14:09:49
- * @Description: 充值文案配置弹窗
- * @Last Modified by: Went
- * @Last Modified time: 2021-11-24 20:08:59
- */
+
 <template>
   <a-modal
     destroyOnClose
     centered
     :visible="visible"
-    :title="`充值页文案配置`"
+    :title="`文案配置`"
     :width="720"
     @ok="handleSubmit"
     @cancel="handleClose"
